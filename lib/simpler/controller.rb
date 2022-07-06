@@ -18,7 +18,7 @@ module Simpler
 
       set_default_headers
       send(action)
-      write_response
+      write_response if @response['Content-Type'] == 'text/html'
 
       @response.finish
     end
@@ -48,7 +48,17 @@ module Simpler
     end
 
     def render(template)
-      @request.env['simpler.template'] = template
+
+      if plain?(template)
+        @response['Content-Type'] = 'text/pain'
+        @response.write(template[:plain])
+      else
+        @request.env['simpler.template'] = template
+      end
+    end
+
+    def plain?(template)
+      template.is_a?(Hash) && template.key?(:plain)
     end
   end
 end
