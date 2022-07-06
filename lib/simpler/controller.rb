@@ -60,5 +60,9 @@ module Simpler
     def plain?(template)
       template.is_a?(Hash) && template.key?(:plain)
     end
+
+    def status(number)
+      @response.status = number
+    end
   end
 end
