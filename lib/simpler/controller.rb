@@ -44,7 +44,9 @@ module Simpler
     end
 
     def params
-      { id: @request.env['REQUEST_PATH'].split('/')[-1] }
+      id = @request.env['REQUEST_PATH'].split('/')[-1]
+      params = id =~ /\d/ ? { id: id } : {}
+      @request.params.merge(params)
     end
 
     def render(template)
