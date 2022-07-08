@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative '../models/test'
+
 class TestsController < Simpler::Controller
   def index
     @time = Time.now
@@ -11,5 +13,7 @@ class TestsController < Simpler::Controller
 
   def create; end
 
-  def show; end
+  def show
+    @test = Test[params[:id]]
+  end
 end

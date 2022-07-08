@@ -44,7 +44,7 @@ module Simpler
     end
 
     def params
-      @request.params
+      { id: @request.env['REQUEST_PATH'].split('/')[-1] }
     end
 
     def render(template)
