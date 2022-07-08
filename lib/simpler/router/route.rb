@@ -13,7 +13,16 @@ module Simpler
       end
 
       def match?(method, path)
-        @method == method && path.match(@path)
+        if match_format?(path)
+          @method == method && @path.include?(':id')
+        else
+          @method == method && path.match(@path)
+        end
+      end
+
+      def match_format?(path)
+        format = /\W#{path.split('/')[1]}\W\d+/
+        format.match?(path)
       end
     end
   end
