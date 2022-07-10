@@ -32,8 +32,11 @@ module Simpler
 
     def template_path
       path = template || [controller.name, action].join('/')
+      view = "#{path}.html.erb"
 
-      Simpler.root.join(VIEW_BASE_PATH, "#{path}.html.erb")
+      @env['simpler.logger'].info('Response') { "#{controller.response.status} #{[controller.response.headers]} #{view}" }
+
+      Simpler.root.join(VIEW_BASE_PATH, view)
     end
   end
 end

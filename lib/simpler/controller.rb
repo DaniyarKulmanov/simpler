@@ -4,9 +4,10 @@ require_relative 'view'
 
 module Simpler
   class Controller
-    attr_reader :name, :request, :response, :params
+    attr_reader :name, :request, :response, :params, :logger
 
     def initialize(env)
+      @logger = env['simpler.logger']
       @name = extract_name
       @request = Rack::Request.new(env)
       @response = Rack::Response.new
@@ -21,10 +22,19 @@ module Simpler
       send(action)
       write_response if @response['Content-Type'] == 'text/html'
 
+      log_data
       @response.finish
     end
 
     private
+
+    attr_writer :logger
+
+    def log_data
+      logger.info('Request') { "#{request.request_method} #{request.url}" }
+      logger.info('Handler') { "#{self.class.name}##{request.env['simpler.action']}" }
+      logger.info('Parameters') { params }
+    end
 
     def extract_params
       id = @request.env['REQUEST_PATH'].split('/')[-1]

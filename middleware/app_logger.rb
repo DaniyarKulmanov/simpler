@@ -10,7 +10,7 @@ class AppLogger
   end
 
   def call(env)
-    @logger.info(env)
+    env['simpler.logger'] = @logger
     @app.call(env)
   end
 end
