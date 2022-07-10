@@ -4,12 +4,13 @@ require_relative 'view'
 
 module Simpler
   class Controller
-    attr_reader :name, :request, :response
+    attr_reader :name, :request, :response, :params
 
     def initialize(env)
       @name = extract_name
       @request = Rack::Request.new(env)
       @response = Rack::Response.new
+      @params = extract_params
     end
 
     def make_response(action)
@@ -24,6 +25,12 @@ module Simpler
     end
 
     private
+
+    def extract_params
+      id = @request.env['REQUEST_PATH'].split('/')[-1]
+      @params = id =~ /\d/ ? { id: id } : {}
+      @request.params.merge(@params)
+    end
 
     def extract_name
       self.class.name.match('(?<name>.+)Controller')[:name].downcase
@@ -41,12 +48,6 @@ module Simpler
 
     def render_body
       View.new(@request.env).render(binding)
-    end
-
-    def params
-      id = @request.env['REQUEST_PATH'].split('/')[-1]
-      params = id =~ /\d/ ? { id: id } : {}
-      @request.params.merge(params)
     end
 
     def render(template)
