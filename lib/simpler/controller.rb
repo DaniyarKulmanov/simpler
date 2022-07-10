@@ -65,6 +65,7 @@ module Simpler
       if plain?(template)
         headers 'Content-Type', 'text/pain'
         @response.write(template[:plain])
+        logger.info('Response') { "#{response.status} #{[response.headers]}" }
       else
         @request.env['simpler.template'] = template
       end
