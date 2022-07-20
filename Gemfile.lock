@@ -1,0 +1,15 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    logger (1.5.1)
+    sequel (5.58.0)
+
+PLATFORMS
+  x86_64-darwin-20
+
+DEPENDENCIES
+  logger
+  sequel
+
+BUNDLED WITH
+   2.3.15
